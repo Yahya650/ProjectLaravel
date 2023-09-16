@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class Navigation extends Controller
 {
     public function index() {
-        return view("welcome")->with('computers',Computer::paginate(16));
+        return view("computers")->with('computers',Computer::paginate(10));
     }
     public function about() {
         return view("about");

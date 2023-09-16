@@ -21,6 +21,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome') -> with("computers" , Computer::paginate(16));
+        return view('home');
     }
 }

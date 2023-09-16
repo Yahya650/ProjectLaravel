@@ -1,5 +1,19 @@
 @extends('layouts.app')
-
+@section('bg_color', 'white')
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $("#registerForm").submit(function(e) {
+                if (!$('#flexRadioDefault1').prop('checked') && !$('#flexRadioDefault2').prop('checked')) {
+                    e.preventDefault(); // Prevent form submission
+                    $("#msgSexeRequired").removeClass("d-none");
+                } else {
+                    $("#msgSexeRequired").addClass("d-none");
+                }
+            });
+        })
+    </script>
+@endsection
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -8,18 +22,34 @@
                     <div class="card-header">{{ __('Register') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form id="registerForm" method="POST" action="{{ route('register') }}">
                             @csrf
 
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                                <label for="fname"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('First Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text"
-                                        class="form-control @error('name') is-invalid @enderror" name="name"
-                                        value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                    <input type="text" class="form-control @error('fname') is-invalid @enderror"
+                                        name="fname" value="{{ old('fname') }}" autocomplete="fname" autofocus>
 
-                                    @error('name')
+                                    @error('fname')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="lname"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Last Name') }}</label>
+
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control @error('lname') is-invalid @enderror"
+                                        name="lname" value="{{ old('lname') }}" autocomplete="lname" autofocus>
+
+                                    @error('lname')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -34,7 +64,7 @@
                                 <div class="col-md-6">
                                     <input id="email" type="email"
                                         class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email">
+                                        value="{{ old('email') }}" autocomplete="email">
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -51,7 +81,7 @@
                                 <div class="col-md-6">
                                     <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="new-password">
+                                        autocomplete="new-password">
 
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
@@ -67,7 +97,7 @@
 
                                 <div class="col-md-6">
                                     <input id="password-confirm" type="password" class="form-control"
-                                        name="password_confirmation" required autocomplete="new-password">
+                                        name="password_confirmation" autocomplete="new-password">
                                 </div>
                             </div>
 
@@ -93,8 +123,12 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <span id="msgSexeRequired" class="d-none text-danger"><strong>The Sexe field is
+                                            required.</strong></span>
                                 </div>
                             </div>
+
+
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
@@ -109,4 +143,5 @@
             </div>
         </div>
     </div>
+
 @endsection

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Computer extends Model
 {
     use HasFactory;
-    public function user(){
+    public function User(){
         return $this->belongsTo(User::class);
     }
     

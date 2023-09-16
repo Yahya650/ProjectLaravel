@@ -12,7 +12,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    public function computer(){
+    public function computer()
+    {
         return $this->hasMany(Computer::class);
     }
 
@@ -25,6 +26,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'sexe',
+        'profileImg'
     ];
 
     /**
@@ -42,8 +45,8 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-//     protected $casts = [
-//         'email_verified_at' => 'datetime',
-//         'password' => 'hashed',
-//     ];
+    //     protected $casts = [
+    //         'email_verified_at' => 'datetime',
+    //         'password' => 'hashed',
+    //     ];
 }

@@ -15,6 +15,6 @@ class ComputersSeeder extends Seeder
      */
     public function run()
     {
-        Computer::factory()->count(100)->create();
+        Computer::factory()->count(250)->create();
     }
 }
