@@ -4,7 +4,7 @@
 @section('content')
     
     <h1 class="mb-3">Create Computer</h1>
-    <form id="f" method="POST" action="{{route("computers.store")}}" enctype="multipart/form-data">
+    <form id="f" method="POST" class="mb-2" action="{{route("computers.store")}}" enctype="multipart/form-data">
         @csrf {{-- cross site request forgery --}}
 
         <div class="mb-3">
@@ -44,7 +44,7 @@
 
         <div class="mb-3">
             <label for="image" class="form-label">Image ( jpg, jpeg, png, bmp, gif, svg, webp )</label>
-            <input name="image-Compt" class="form-control form-control-lg" id="image" type="file" value="{{old('image-Compt')}}">
+            <input name="image-Compt" class="form-control form-control-lg" id="image" type="file" accept="image/*" value="{{old('image-Compt')}}">
             <span class="text-secondary">Max Size 10MB</span>
             @error('image-Compt')
                 <div class="alert alert-danger mt-2 p-2" role="alert">
