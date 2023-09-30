@@ -1,15 +1,14 @@
 <?php
 
-use App\Models\User;
-use App\Http\Controllers\navigation;
+use App\Http\Controllers\Navigation;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Controllers\computresController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use PHPUnit\TextUI\XmlConfiguration\Group;
-use \App\Http\Controllers\ComputresController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PdfUserController;
+use App\Http\Controllers\computresController;
+use App\Http\Controllers\Auth\GoogleSocialiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +32,7 @@ Route::middleware(['CheckAuth'])->prefix('user')->group(function () {
 });
 
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
-    Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('destroy')->middleware(['profileUpdateCheck',"verified"]);
+    Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('destroy')->middleware(['profileUpdateCheck']);
     Route::delete('/destroyallcomputers/{id}', [UserController::class, 'destroyAllComputers'])->name('computers.destroyall')->middleware(['profileUpdateCheck'])->middleware('verified');
     Route::put('/update/{id}', [UserController::class, 'update'])->name('edit')->middleware(['profileUpdateCheck']);
     Route::put('/updateprofileimage/{id}', [UserController::class, 'uploadProfileImage'])->name('editprofileImg');
@@ -43,6 +42,13 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::get('/download-pdf', [PdfUserController::class, 'downloadPDF'])->name('download.pdf')->middleware('verified');
     Route::get('/computers', [ComputresController::class, 'index'])->name('computers.index')->middleware('verified');
 });
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/auth/google/redirect', [GoogleSocialiteController::class, 'redirect'])->name("googleAuth");
+    Route::get('/auth/google/callback', [GoogleSocialiteController::class, 'callback']);
+});
+
+
 
 Route::prefix('computers')->name('computers.')->group(function () {
     Route::get('', [navigation::class, 'index'])->name('index');

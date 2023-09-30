@@ -2,6 +2,19 @@
 @section('title','Login')
 
 @section('content')
+<a href="{{ route('googleAuth') }}">
+    <div class="g-sign-in-button">
+      <div class="content-wrapper">
+        <div class="logo-wrapper">
+          <img src="https://developers.google.com/identity/images/g-logo.png">
+        </div>
+        <span class="text-container">
+          <span>Sign in with Google</span>
+        </span>
+      </div>
+    </div>
+  </a>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

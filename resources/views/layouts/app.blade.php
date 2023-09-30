@@ -4,9 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    @auth
+    @if (Auth::check())
         <link rel="icon" href="{{ Storage::url(Auth::user()->profileImg) }}" type="image/png">
-    @endauth
+    @else
+        <link rel="icon" href="{{ Storage::url('AcA2LnWL_400x400.jpg') }}" type="image/png">
+    @endif
+    
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -17,6 +20,7 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
 
     <!-- Fonts -->
+    <link rel="stylesheet" href="{{ url('/css/style.css') }}">
     <link rel="stylesheet" href="{{ url('/css&js/bootstrap.min.css') }}">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
