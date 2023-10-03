@@ -9,7 +9,7 @@
     @else
         <link rel="icon" href="{{ Storage::url('AcA2LnWL_400x400.jpg') }}" type="image/png">
     @endif
-    
+
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -20,6 +20,7 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
 
     <!-- Fonts -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="{{ url('/css/style.css') }}">
     <link rel="stylesheet" href="{{ url('/css&js/bootstrap.min.css') }}">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -29,7 +30,180 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="{{ url('/css&js/jquery-3.6.4.min.js') }}"></script>
     @yield('style')
+    <style>
+        .contentAjax {
+            text-align: center;
+        }
 
+        /* * {
+            border: 0;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        } */
+
+        :root {
+            --hue: 223;
+            --bg: hsl(var(--hue), 90%, 95%);
+            --fg: hsl(var(--hue), 90%, 5%);
+            /* font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1280 - 320)); */
+        }
+
+        /* body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font: 1em/1.5 sans-serif;
+            height: 100vh;
+            display: grid;
+            place-items: center;
+            transition: background-color 0.3s;
+        } */
+
+        main {
+            padding: 1.5em 0;
+        }
+
+        .sp {
+            display: block;
+            width: 20px;
+            height: 20px;
+            margin: 0 10px;
+        }
+
+        .sp__ring {
+            stroke: hsla(var(--hue), 90%, 5%, 0.1);
+            transition: stroke 0.3s;
+        }
+
+        .sp__worm1,
+        .sp__worm2,
+        .sp__worm2-1 {
+            animation: worm1 5s ease-in infinite;
+        }
+
+        .sp__worm1 {
+            transform-origin: 64px 64px;
+        }
+
+        .sp__worm2,
+        .sp__worm2-1 {
+            transform-origin: 22px 22px;
+        }
+
+        .sp__worm2 {
+            animation-name: worm2;
+            animation-timing-function: linear;
+        }
+
+        .sp__worm2-1 {
+            animation-name: worm2-1;
+            stroke-dashoffset: 175.92;
+        }
+
+        /* Dark theme */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: hsl(var(--hue), 90%, 5%);
+                --fg: hsl(var(--hue), 90%, 95%);
+            }
+
+            .sp__ring {
+                /* stroke: hsla(var(--hue), 90%, 95%, 0.1); */
+            }
+        }
+
+        /* Animations */
+        @keyframes worm1 {
+
+            from,
+            to {
+                stroke-dashoffset: 0
+            }
+
+            12.5% {
+                animation-timing-function: ease-out;
+                stroke-dashoffset: -175.91;
+            }
+
+            25% {
+                animation-timing-function: cubic-bezier(0, 0, 0.43, 1);
+                stroke-dashoffset: -307.88;
+            }
+
+            50% {
+                animation-timing-function: ease-in;
+                stroke-dashoffset: -483.8;
+            }
+
+            62.5% {
+                animation-timing-function: ease-out;
+                stroke-dashoffset: -307.88;
+            }
+
+            75% {
+                animation-timing-function: cubic-bezier(0, 0, 0.43, 1);
+                stroke-dashoffset: -175.91;
+            }
+        }
+
+        @keyframes worm2 {
+
+            from,
+            12.5%,
+            75%,
+            to {
+                transform: rotate(0) translate(-42px, 0);
+            }
+
+            25%,
+            62.5% {
+                transform: rotate(0.5turn) translate(-42px, 0);
+            }
+        }
+
+        @keyframes worm2-1 {
+            from {
+                stroke-dashoffset: 175.91;
+                transform: rotate(0);
+            }
+
+            12.5% {
+                animation-timing-function: cubic-bezier(0, 0, 0.42, 1);
+                stroke-dashoffset: 0;
+                transform: rotate(0);
+            }
+
+            25% {
+                animation-timing-function: linear;
+                stroke-dashoffset: 0;
+                transform: rotate(1.5turn);
+            }
+
+            37.5%,
+            50% {
+                stroke-dashoffset: -175.91;
+                transform: rotate(1.5turn);
+            }
+
+            62.5% {
+                animation-timing-function: cubic-bezier(0, 0, 0.42, 1);
+                stroke-dashoffset: 0;
+                transform: rotate(1.5turn);
+            }
+
+            75% {
+                animation-timing-function: linear;
+                stroke-dashoffset: 0;
+                transform: rotate(0);
+            }
+
+            87.5%,
+            to {
+                stroke-dashoffset: 175.92;
+                transform: rotate(0);
+            }
+        }
+    </style>
 </head>
 
 <body style="@yield('bg_color')">
@@ -50,40 +224,90 @@
 
     @include('layouts._header')
 
-    <section class="container">
-        @if ($msg = Session::get('success'))
-            <div class="m-2">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ $msg }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        @endif
 
-        @if (session('resent'))
-            <div class="alert alert-success" role="alert">
-                {{ __('A fresh verification link has been sent to your email address.') }}
-            </div>
-        @endif
-        @auth
-            @if (Auth::user()->email_verified_at == null)
-                <div class="alert alert-warning" role="alert">
-                    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
-                        @csrf
-                        <button type="submit"
-                            class="btn btn-link alert-link p-0 m-0 align-baseline">{{ __('Verify your email') }}</button>.
-                    </form>
-                    For get all features
+
+    <section class="container">
+        <div class="contentAjax">
+            @if ($msg = Session::get('success'))
+                <div class="m-2">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ $msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </div>
             @endif
-        @endauth
 
+            @if (session('resent'))
+                <div class="alert alert-success" role="alert">
+                    {{ __('A fresh verification link has been sent to your email address.') }}
+                </div>
+            @endif
+            @auth
+                @if (Auth::user()->email_verified_at == null)
+                    <div class="alert alert-warning" role="alert">
+                        <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+                            @csrf
+                            <button type="submit"
+                                class="btn btn-link alert-link p-0 m-0 align-baseline">{{ __('Verify your email') }}</button>.
+                        </form>
+                        For get all features
+                    </div>
+                @endif
+            @endauth
+        </div>
         @yield('content')
     </section>
 
     @include('layouts._footer')
 
     @yield('script')
+    <script>
+        $(document).ready(function() {
+            document.onclick = () => {
+                document.getElementById('suggestions').classList.add('d-none')
+            }
+            // $('#suggestions').on('mouseout', function () {
+            // })
+            $('#s').on('keyup', function() {
+                // alert()
+
+                if ($('#s').val() != "") {
+                    $('#suggestions').removeClass('d-none')
+                    $('#suggestions ul').empty()
+                    $('#loadingCircl').show()
+                    $.ajax({
+                        type: 'GET',
+                        url: '/computers/searchajax',
+                        data: {
+                            _token: '{{ csrf_token() }}', // Include CSRF token for Laravel
+                            q: $('#s').val(),
+                            // other data if needed
+                        },
+                        success: function(data) {
+                            $('#loadingCircl').hide()
+
+                            $('#suggestions ul').empty()
+                            if (data == "") {
+                                $('#suggestions ul').append(
+                                    `<li> Opse!, We not found this Computer </li>`)
+                            }
+                            data.forEach(element => {
+                                $('#suggestions ul').append(
+                                    `<li> <a href="/computers/${element . id * 789456654987}"> ${element.nameComputer} </a> </li>`
+                                );
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert(errorThrown)
+                        }
+                    });
+                } else {
+                    $('#suggestions').addClass('d-none')
+                    $('#suggestions ul').empty()
+                }
+            });
+        });
+    </script>
 </body>
 
 

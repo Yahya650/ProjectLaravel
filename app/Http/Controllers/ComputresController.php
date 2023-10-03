@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Computer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ComputresController extends Controller
@@ -140,10 +141,17 @@ class ComputresController extends Controller
         $search = $request->q;
         $computersSearch = Computer::where(function ($query) use ($search) {
             $query->where('nameComputer', 'like', "%" . $search . "%")
-                ->orWhere('originComputer', 'like', "%" . $search . "%")->paginate(10);
+                ->paginate(10);
         })->get();
-
         return view('computers.search', compact('computersSearch', 'search'));
+    }
+    public function searchajax(Request $request)
+    {
+        $search = $request->q;
+        $computersSearch = Computer::where(function ($query) use ($search) {
+            $query->where('nameComputer', 'like', "%" . $search . "%")->paginate(10);
+        })->get();
+        return Response::json($computersSearch);
     }
     
     
