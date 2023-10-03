@@ -22,7 +22,7 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="{{ url('/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url('/css&js/bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ url('/css&js/bootstrap.min.css') }}"> --}}
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -266,11 +266,7 @@
             document.onclick = () => {
                 document.getElementById('suggestions').classList.add('d-none')
             }
-            // $('#suggestions').on('mouseout', function () {
-            // })
             $('#s').on('keyup', function() {
-                // alert()
-
                 if ($('#s').val() != "") {
                     $('#suggestions').removeClass('d-none')
                     $('#suggestions ul').empty()
@@ -279,9 +275,8 @@
                         type: 'GET',
                         url: '/computers/searchajax',
                         data: {
-                            _token: '{{ csrf_token() }}', // Include CSRF token for Laravel
+                            _token: '{{ csrf_token() }}',
                             q: $('#s').val(),
-                            // other data if needed
                         },
                         success: function(data) {
                             $('#loadingCircl').hide()

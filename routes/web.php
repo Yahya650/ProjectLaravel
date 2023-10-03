@@ -27,20 +27,24 @@ Route::get("/", [HomeController::class, "index"])->name("home");
 Route::get("/about", [Navigation::class, "about"])->name("about");
 Route::get("/contact", [Navigation::class, "contact"])->name("contact");
 
-Route::middleware(['CheckAuth'])->prefix('user')->group(function () {
-    Route::resource('computers', ComputresController::class)->except(['show', 'index', 'search', 'create', 'store']);
-});
+// Route::middleware(['CheckAuth'])->prefix('user')->group(function () {
+//     Route::resource('computers', ComputresController::class)->except(['show', 'index', 'search', 'create', 'store']);
+// });
 
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
-    Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('destroy')->middleware(['profileUpdateCheck']);
-    Route::delete('/destroyallcomputers/{id}', [UserController::class, 'destroyAllComputers'])->name('computers.destroyall')->middleware(['profileUpdateCheck'])->middleware('verified');
-    Route::put('/update/{id}', [UserController::class, 'update'])->name('edit')->middleware(['profileUpdateCheck']);
+Route::middleware(['auth', 'verified', 'CheckOwner'])->prefix('user')->name('user.')->group(function () {
+    Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('destroy')->withoutMiddleware(['verified']);
+    Route::delete('/destroyallcomputers/{id}', [UserController::class, 'destroyAllComputers'])->name('computers.destroyall');
+    Route::put('/update/{id}', [UserController::class, 'update'])->name('edit')->withoutMiddleware('verified');
     Route::put('/updateprofileimage/{id}', [UserController::class, 'uploadProfileImage'])->name('editprofileImg');
-    Route::get('/profile', [UserController::class, 'show'])->name('profile');
-    Route::post('/computersave', [ComputresController::class, 'store'])->name('computers.store')->middleware('verified');
-    Route::get('/computers/create', [ComputresController::class, 'create'])->name('computers.create')->middleware('verified');
-    Route::get('/download-pdf', [PdfUserController::class, 'downloadPDF'])->name('download.pdf')->middleware('verified');
-    Route::get('/computers', [ComputresController::class, 'index'])->name('computers.index')->middleware('verified');
+    Route::get('/profile', [UserController::class, 'show'])->name('profile')->withoutMiddleware(['verified', 'CheckOwner']);
+    Route::get('/download-pdf', [PdfUserController::class, 'downloadPDF'])->name('download.pdf')->withoutMiddleware(['CheckOwner']);
+    Route::delete('/computer/destroy/{id}', [ComputresController::class, 'destroy'])->name('computers.destroy')->middleware(['CheckOwnerPc'])->withoutMiddleware(['CheckOwner']);
+    Route::put('/computers/update/{id}', [ComputresController::class, 'update'])->name('computers.update')->middleware(['CheckOwnerPc'])->withoutMiddleware(['CheckOwner']);
+    Route::get('/computer/editajax/{id}', [ComputresController::class, 'editajax'])->middleware(['CheckOwnerPc'])->withoutMiddleware(['CheckOwner']);
+    Route::get('/computer/edit/{id}', [ComputresController::class, 'edit'])->name('computers.edit')->middleware(['CheckOwnerPc'])->withoutMiddleware(['CheckOwner']);
+    Route::post('/computersave', [ComputresController::class, 'store'])->name('computers.store')->withoutMiddleware(['CheckOwner']);
+    Route::get('/computers/create', [ComputresController::class, 'create'])->name('computers.create')->withoutMiddleware(['CheckOwner']);
+    Route::get('/computers', [ComputresController::class, 'index'])->name('computers.index')->withoutMiddleware(['CheckOwner']);
 });
 
 Route::middleware(['guest'])->group(function () {

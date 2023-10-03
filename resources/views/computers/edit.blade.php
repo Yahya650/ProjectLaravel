@@ -5,7 +5,7 @@
 
 @section('content')
     <h1 class="mb-3">Update Computer</h1>
-    <form id="f" method="post" action="{{route("computers.update",$Computer->id*789456654987)}}" enctype="multipart/form-data">
+    <form id="f" method="post" action="{{route("user.computers.update",$Computer->id*789456654987)}}" enctype="multipart/form-data">
         <div class="" id="image" >
             <label for="" class="form-label">Old Image</label>
             <img src="{{Storage::url($Computer['imageComputer'])}}" alt="" class="mb-2" width="100%" srcset="">

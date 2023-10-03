@@ -90,6 +90,16 @@ class ComputresController extends Controller
         ]);
     }
 
+    public function editajax(Request $rq)
+    {
+        if (Computer::find($rq->id / 789456654987) && is_integer($rq->id / 789456654987)) {
+            $computer = Computer::find($rq->id / 789456654987);
+        } else {
+            return redirect()->route('404', 'error');
+        }
+        return Response::json($computer);
+    }
+
     /**
      * Update the specified resource in storage.
      */

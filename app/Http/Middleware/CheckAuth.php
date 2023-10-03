@@ -19,13 +19,8 @@ class CheckAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        $id = $request->route('computer') / 789456654987;
-        if (Computer::find($id)) {
-            if (Computer::find($id)->user_id != Auth::id()) {
-                return redirect()->route('404', 'error');
-            }
-        } else {
-            return redirect()->route('404', 'error404');
+        if ($request->route('id') != Auth::id()) {
+            return redirect()->route('404', 'error');
         }
         return $next($request);
     }

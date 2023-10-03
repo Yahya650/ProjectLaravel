@@ -30,7 +30,11 @@
         })
     </script>
 @endsection
+
 {{-- End Script Page User --}}
+@section('script')
+
+@endsection
 
 @section('content')
     <style>
@@ -79,7 +83,8 @@
                             @if (Auth::user()->email_verified_at != null)
                                 <span><img src="{{ Storage::url('verified.png') }}" width="30px" alt=""></span>
                             @else
-                                <span><img src="{{ Storage::url('verified-account.png') }}" width="30px" alt=""></span>
+                                <span><img src="{{ Storage::url('verified-account.png') }}" width="30px"
+                                        alt=""></span>
                             @endif
                         </h5>
 
@@ -93,6 +98,7 @@
                             data-bs-target="#modifierModale">
                             <i class="bi bi-pencil-square"></i>
                         </button>
+
 
                         {{-- Button for Download PDF --}}
                         @auth
@@ -204,113 +210,46 @@
                                                                     class="fa-regular fa-eye"></i>
                                                             </a>
 
+
                                                             {{-- btn Modify --}}
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#modalEditComputer{{ $loop->iteration }}">
+                                                            <button id="modalEditComputer{{ $loop->iteration }}"
+                                                                type="button" class="btn btn-primary"
+                                                                data-bs-toggle="modal" data-bs-target="#modalEditComputer">
                                                                 <i class="bi bi-pencil"></i>
                                                             </button>
-                                                            <!-- Modal (alert modify) -->
-                                                            <div class="modal fade"
-                                                                id="modalEditComputer{{ $loop->iteration }}"
-                                                                tabindex="-1" aria-labelledby="exampleModalLabel"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h1 class="modal-title fs-5"
-                                                                                id="exampleModalLabel">ALERT</h1>
-                                                                            <button type="button" class="btn-close"
-                                                                                data-bs-dismiss="modal"
-                                                                                aria-label="Close"></button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <form method="post" id="feditPc"
-                                                                                action="{{ route('computers.update', $computer->id * 789456654987) }}"
-                                                                                enctype="multipart/form-data">
-                                                                                <div class="" id="imageComputer">
-                                                                                    <label for=""
-                                                                                        class="form-label">Old
-                                                                                        Image</label>
-                                                                                    <img src="{{ Storage::url($computer['imageComputer']) }}"
-                                                                                        alt="" class="mb-2"
-                                                                                        width="100%" srcset="" />
-                                                                                </div>
-                                                                                @csrf {{-- cross site request forgery --}}
-                                                                                @method('PUT')
-                                                                                <div class="mb-3">
-                                                                                    <label for="nameComptEdit"
-                                                                                        class="form-label">Name
-                                                                                        Computer</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        id="nameComptEdit"
-                                                                                        name="Name-Compt"
-                                                                                        value="{{ $computer['nameComputer'] }}" />
-                                                                                    <span class="d-none text-danger">Name
-                                                                                        is invalid. It must be between 2 and
-                                                                                        50 characters.</span>
-                                                                                </div>
-
-                                                                                <div class="mb-3">
-                                                                                    <label for="OrigineEdit"
-                                                                                        class="form-label">Origine</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        id="OrigineEdit"
-                                                                                        name="Origin-Compt"
-                                                                                        value="{{ $computer['originComputer'] }}" />
-                                                                                    <span
-                                                                                        class="d-none text-danger">Origine
-                                                                                        is invalid. It must be between 2 and
-                                                                                        50 characters.</span>
-                                                                                </div>
-
-                                                                                <div class="mb-3">
-                                                                                    <label for="PriceEdit"
-                                                                                        class="form-label">Price
-                                                                                        (Dollars)
-                                                                                    </label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        id="PriceEdit" name="Price-Compt"
-                                                                                        value="{{ $computer['priceComputer'] }}" />
-                                                                                    <span class="d-none text-danger">Pace
-                                                                                        is invalid.</span>
-                                                                                </div>
-
-                                                                                {{-- Upload image computer --}}
-                                                                                <label for="imagePcEdit"
-                                                                                    class="form-label">Upload your Profile
-                                                                                    Image</label>
-                                                                                <input name="image-Compt"
-                                                                                    class="form-control form-control-lg"
-                                                                                    id="imagePcEdit" type="file"
-                                                                                    accept="image/*"
-                                                                                    value="{{ old('image-Compt') }}" />
-                                                                                <span class="text-secondary">Max Size
-                                                                                    10MB</span><br />
-                                                                                <div class="d-none text-danger"
-                                                                                    id="msgSizeEdit">
-                                                                                    Image size exceeds 10MB. Please choose a
-                                                                                    smaller image.
-                                                                                </div>
+                                                            <script>
+                                                                $('#modalEditComputer{{ $loop->iteration }}').click(function() {
+                                                                    // document.getElementById('loadingCircl').classList.remove('d-none')
+                                                                    $('#loadingCircll').removeClass('d-none')
+                                                                    $('#feditPc').hide()
+                                                                    $.ajax({
+                                                                        type: 'get',
+                                                                        url: '/user/computer/editajax/{{ $computer->id * 789456654987 }}',
+                                                                        data: {
+                                                                            _token: '{{ csrf_token() }}',
+                                                                            id: '{{ $computer->id * 789456654987 }}'
+                                                                        },
+                                                                        success: function(data) {
+                                                                            $('#feditPc').attr('action',
+                                                                                '/user/computers/update/{{ $computer->id * 789456654987 }}')
+                                                                            $('#loadingCircll').addClass('d-none')
+                                                                            $('#feditPc').show()
+                                                                            $('#imageComputer').html(`<label for="" class="form-label">Old
+                                                                                            Image</label>
+                                                                                <img src="/storage/${data.imageComputer}" alt="" class="mb-2"
+                                                                                width="100%" srcset="" />`)
+                                                                            $('#nameComptEdit').val(data.nameComputer)
+                                                                            $('#OrigineEdit').val(data.originComputer)
+                                                                            $('#PriceEdit').val(data.priceComputer)
+                                                                        },
+                                                                        error: function(jqXHR, textStatus, errorThrown) {
+                                                                            alert(errorThrown)
+                                                                        }
+                                                                    });
+                                                                });
+                                                            </script>
 
 
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-secondary"
-                                                                                        data-bs-dismiss="modal">Cancel</button>
-                                                                                    <button type="submit"
-                                                                                        class="btn btn-success">Save</button>
-                                                                                </div>
-
-                                                                            </form>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
 
                                                             {{-- Delete btn --}}
                                                             <button type="button" class="btn btn-danger"
@@ -344,7 +283,7 @@
                                                                                 class="btn btn-secondary"
                                                                                 data-bs-dismiss="modal">No</button>
                                                                             <form
-                                                                                action="{{ route('computers.destroy', $computer->id * 789456654987) }}"
+                                                                                action="{{ route('user.computers.destroy', $computer->id * 789456654987) }}"
                                                                                 method="post">
                                                                                 @csrf
                                                                                 @method('DELETE')
@@ -380,6 +319,15 @@
                                                         data-bs-target="#addComputerModel">
                                                         <i class="bi bi-plus-lg"></i>
                                                     </button> if you want create your first computer
+                                                </div>
+                                            @else
+                                                <div class="alert alert-primary text-center mt-5" role="alert">
+                                                    if you want create your first computer you need to <form class="d-inline"
+                                                        method="POST" action="{{ route('verification.resend') }}">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="btn btn-link alert-link p-0 m-0 align-baseline">{{ __('Verify your email') }}</button>.
+                                                    </form>
                                                 </div>
                                             @endif
                                         @endauth
@@ -603,6 +551,135 @@
                             <button type="submit" class="btn btn-success">Upload</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal (alert modify computer) -->
+    <div class="modal fade" id="modalEditComputer" tabindex="-1" style="min-height: 500px"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">ALERT</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBodyEditComputer">
+                    <main id="loadingCircll" class="d-flex justify-content-center">
+                        <svg class="sp" viewBox="0 0 128 128" style="width: 128px; height: 128px;" width="128px"
+                            height="128px" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="grad1" x1="0" y1="0" x2="0"
+                                    y2="1">
+                                    <stop offset="0%" stop-color="#000" />
+                                    <stop offset="40%" stop-color="#fff" />
+                                    <stop offset="100%" stop-color="#fff" />
+                                </linearGradient>
+                                <linearGradient id="grad2" x1="0" y1="0" x2="0"
+                                    y2="1">
+                                    <stop offset="0%" stop-color="#000" />
+                                    <stop offset="60%" stop-color="#000" />
+                                    <stop offset="100%" stop-color="#fff" />
+                                </linearGradient>
+                                <mask id="mask1">
+                                    <rect x="0" y="0" width="128" height="128"
+                                        fill="url(#grad1)" />
+                                </mask>
+                                <mask id="mask2">
+                                    <rect x="0" y="0" width="128" height="128"
+                                        fill="url(#grad2)" />
+                                </mask>
+                            </defs>
+                            <g fill="none" stroke-linecap="round" stroke-width="16">
+                                <circle class="sp__ring" r="56" cx="64" cy="64" stroke="#ddd" />
+                                <g stroke="hsl(223,90%,50%)">
+                                    <path class="sp__worm1" d="M120,64c0,30.928-25.072,56-56,56S8,94.928,8,64"
+                                        stroke="hsl(343,90%,50%)" stroke-dasharray="43.98 307.87" />
+                                    <g transform="translate(42,42)">
+                                        <g class="sp__worm2" transform="translate(-42,0)">
+                                            <path class="sp__worm2-1" d="M8,22c0-7.732,6.268-14,14-14s14,6.268,14,14"
+                                                stroke-dasharray="43.98 175.92" />
+                                        </g>
+                                    </g>
+                                </g>
+                                <g stroke="hsl(283,90%,50%)" mask="url(#mask1)">
+                                    <path class="sp__worm1" d="M120,64c0,30.928-25.072,56-56,56S8,94.928,8,64"
+                                        stroke-dasharray="43.98 307.87" />
+                                    <g transform="translate(42,42)">
+                                        <g class="sp__worm2" transform="translate(-42,0)">
+                                            <path class="sp__worm2-1" d="M8,22c0-7.732,6.268-14,14-14s14,6.268,14,14"
+                                                stroke-dasharray="43.98 175.92" />
+                                        </g>
+                                    </g>
+                                </g>
+                                <g stroke="hsl(343,90%,50%)" mask="url(#mask2)">
+                                    <path class="sp__worm1" d="M120,64c0,30.928-25.072,56-56,56S8,94.928,8,64"
+                                        stroke-dasharray="43.98 307.87" />
+                                    <g transform="translate(42,42)">
+                                        <g class="sp__worm2" transform="translate(-42,0)">
+                                            <path class="sp__worm2-1" d="M8,22c0-7.732,6.268-14,14-14s14,6.268,14,14"
+                                                stroke-dasharray="43.98 175.92" />
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </main>
+                    <form method="get" id="feditPc" action="" enctype="multipart/form-data">
+                        @method('PUT')
+                        @csrf {{-- cross site request forgery --}}
+                        <div class="" id="imageComputer"></div>
+                        {{-- @method('PUT') --}}
+                        <div class="mb-3">
+                            <label for="nameComptEdit" class="form-label">Name
+                                Computer</label>
+                            <input type="text" class="form-control" id="nameComptEdit" name="Name-Compt"
+                                value="" />
+                            <span class="d-none text-danger">Name
+                                is invalid. It must be between 2 and
+                                50 characters.</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="OrigineEdit" class="form-label">Origine</label>
+                            <input type="text" class="form-control" id="OrigineEdit" name="Origin-Compt"
+                                value="" />
+                            <span class="d-none text-danger">Origine
+                                is invalid. It must be between 2 and
+                                50 characters.</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="PriceEdit" class="form-label">Price
+                                (Dollars)
+                            </label>
+                            <input type="text" class="form-control" id="PriceEdit" name="Price-Compt"
+                                value="" />
+                            <span class="d-none text-danger">Pace
+                                is invalid.</span>
+                        </div>
+
+                        {{-- Upload image computer --}}
+                        <label for="imagePcEdit" class="form-label">Upload your Profile
+                            Image</label>
+                        <input name="image-Compt" class="form-control form-control-lg" id="imagePcEdit" type="file"
+                            accept="image/*" value="" />
+                        <span class="text-secondary">Max Size
+                            10MB</span><br />
+                        <div class="d-none text-danger" id="msgSizeEdit">
+                            Image size exceeds 10MB. Please choose a
+                            smaller image.
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+
+                    </form>
+
                 </div>
             </div>
         </div>

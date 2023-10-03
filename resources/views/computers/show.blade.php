@@ -23,7 +23,7 @@
         </figure>
     </div>
     @if (Auth::user() && Auth::id() == $computer->user_id)
-        <a href="{{ route('computers.edit', [$computer->id * 789456654987]) }}" class="btn btn-success">Edit</a>
+        <a href="{{ route('user.computers.edit', [$computer->id * 789456654987]) }}" class="btn btn-success">Edit</a>
     @endif
 
 @endsection

@@ -94,7 +94,7 @@ background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 
                             class="mx-1 btn btn-success"><i class="fa-regular fa-eye" style="color: #fafafa;"></i></a>
                         @auth
                             @if (Auth::id() == $item['user_id'])
-                                <a href="{{ route('computers.edit', $item->id * 789456654987) }}"
+                                <a href="{{ route('user.computers.edit', $item->id * 789456654987) }}"
                                     class="mx-1 btn btn-primary"><i class="bi bi-pencil-square"></i></a>
 
                                 <!-- Button delete -->
@@ -123,7 +123,7 @@ background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                <form action="{{ route('computers.destroy', $item->id * 789456654987) }}" method="post">
+                                <form action="{{ route('user.computers.destroy', $item->id * 789456654987) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <input type="submit" class="m-1 btn btn-danger" value="Yes">

@@ -24,7 +24,7 @@ background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 
                         </figure>
                         <a href="{{ route('computers.show', $Computer->id * 789456654987) }}"
                             class="m-1 btn btn-success">Regarder</a>
-                        <a href="{{ route('computers.edit', $Computer->id * 789456654987) }}"
+                        <a href="{{ route('user.computers.edit', $Computer->id * 789456654987) }}"
                             class="m-1 btn btn-primary">Modify</a>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -49,7 +49,7 @@ background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                        <form action="{{ route('computers.destroy', $Computer->id * 789456654987) }}"
+                                        <form action="{{ route('user.computers.destroy', $Computer->id * 789456654987) }}"
                                             method="post">
                                             @csrf
                                             @method('DELETE')
