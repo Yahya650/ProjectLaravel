@@ -1,5 +1,6 @@
+
 # Ignore all files in the root directory
-/*
+*
 
 # Except for these specific files in the root directory
 !verified.png
