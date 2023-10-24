@@ -1,7 +1,12 @@
 # Ignore all files except img1.png and img2.png
 *
+profileUser/*
+ComputersImages/*
 
 # Except for these specific files
 !verified.png
 !verified-account.png
 !AcA2LnWL_400x400.jpg
+!profileUser/90d6234278f61977c4e9d2c34836c418.jpg
+!profileUser/default-female-user-profile-icon-vector-illustration_276184-169.jpg
+
