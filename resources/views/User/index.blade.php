@@ -626,11 +626,10 @@
                             </g>
                         </svg>
                     </main>
-                    <form method="get" id="feditPc" action="" enctype="multipart/form-data">
+                    <form method="post" id="feditPc" action="" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf {{-- cross site request forgery --}}
                         <div class="" id="imageComputer"></div>
-                        {{-- @method('PUT') --}}
                         <div class="mb-3">
                             <label for="nameComptEdit" class="form-label">Name
                                 Computer</label>

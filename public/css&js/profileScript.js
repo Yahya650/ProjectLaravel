@@ -75,7 +75,7 @@ $(document).ready(function () {
         var originInput = $("#OrigineEdit").val();
         var PriceInput = $("#PriceEdit").val();
 
-        var nameRegex = /^[A-Za-z\s'-]{2,50}$/;
+        var nameRegex = /^[A-Za-z\s'-\.]{2,50}$/;
         var PriceRegex = /^\d+(\.\d{1,2})?$/;
 
         if (!nameRegex.test(nameInput)) {
