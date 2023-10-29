@@ -23,6 +23,16 @@
         </div>
 
         <div class="mb-3">
+            <label for="desc" class="form-label">Descreption de Computer <i class="blockquote-footer">(Optionnel)</i></label>
+            <textarea type="text" class="form-control" id="desc" name="desc">{{ $Computer['desc'] }}</textarea>
+            @error('desc')
+                <div class="alert alert-danger mt-2 p-2" role="alert">
+                    {{$message}}
+                </div>
+            @enderror
+        </div> 
+
+        <div class="mb-3">
             <label for="Origine" class="form-label">Origine</label>
                 <input type="text" class="form-control" id="Origine" name="Origin-Compt" value="{{$Computer['originComputer']}}">
                 <div>

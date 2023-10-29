@@ -218,6 +218,7 @@
                                                                 <i class="bi bi-pencil"></i>
                                                             </button>
                                                             <script>
+                                                                
                                                                 $('#modalEditComputer{{ $loop->iteration }}').click(function() {
                                                                     // document.getElementById('loadingCircl').classList.remove('d-none')
                                                                     $('#loadingCircll').removeClass('d-none')
@@ -230,6 +231,7 @@
                                                                             id: '{{ $computer->id * 789456654987 }}'
                                                                         },
                                                                         success: function(data) {
+                                                                            $('#desc').text(data.desc)
                                                                             $('#feditPc').attr('action',
                                                                                 '/user/computers/update/{{ $computer->id * 789456654987 }}')
                                                                             $('#loadingCircll').addClass('d-none')
@@ -241,6 +243,7 @@
                                                                             $('#nameComptEdit').val(data.nameComputer)
                                                                             $('#OrigineEdit').val(data.originComputer)
                                                                             $('#PriceEdit').val(data.priceComputer)
+                                                                            $("#descCompt").val(data.desc)
                                                                         },
                                                                         error: function(jqXHR, textStatus, errorThrown) {
                                                                             alert(errorThrown)
@@ -460,6 +463,11 @@
                                 characters.</span>
                         </div>
                         <div class="mb-3">
+                            <label for="desc" class="form-label">Descreption de Computer <i
+                                    class="blockquote-footer">(Optionnel)</i></label>
+                            <textarea type="text" class="form-control" name="desc" value="{{ old('desc') }}"></textarea>
+                        </div>
+                        <div class="mb-3">
                             <label for="Origine" class="form-label">Origine</label>
                             <input type="text" class="form-control" id="Origine" name="Origin-Compt"
                                 value="{{ old('Origin-Compt') }}">
@@ -583,12 +591,10 @@
                                     <stop offset="100%" stop-color="#fff" />
                                 </linearGradient>
                                 <mask id="mask1">
-                                    <rect x="0" y="0" width="128" height="128"
-                                        fill="url(#grad1)" />
+                                    <rect x="0" y="0" width="128" height="128" fill="url(#grad1)" />
                                 </mask>
                                 <mask id="mask2">
-                                    <rect x="0" y="0" width="128" height="128"
-                                        fill="url(#grad2)" />
+                                    <rect x="0" y="0" width="128" height="128" fill="url(#grad2)" />
                                 </mask>
                             </defs>
                             <g fill="none" stroke-linecap="round" stroke-width="16">
@@ -638,6 +644,10 @@
                             <span class="d-none text-danger">Name
                                 is invalid. It must be between 2 and
                                 50 characters.</span>
+                        </div>
+                        <div cla ss="mb-3">
+                            <label for="desc" class="form-label">Descreption de Computer <i>(Optionnel)</i></label>
+                            <textarea type="text" class="form-control" id="descCompt" name="desc"></textarea>
                         </div>
 
                         <div class="mb-3">

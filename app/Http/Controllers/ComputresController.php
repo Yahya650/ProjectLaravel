@@ -53,6 +53,11 @@ class ComputresController extends Controller
         $computer->originComputer = $request->input("Origin-Compt");
         $computer->priceComputer = $request->input('Price-Compt');
         $computer->imageComputer = $image;
+        try {
+            $computer->desc = $request->desc;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         $computer->User_id = Auth::id();
 
         $computer->save();
@@ -117,7 +122,11 @@ class ComputresController extends Controller
             "Price-Compt"  => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
             "image-Compt"  => ['image', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:10000'],
         ]);
-
+        try {
+            $computer->desc = $request->desc;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         try {
             $image = $request->file('image-Compt')->store('ComputersImages', 'public');
             Storage::delete('public/' . $oldImageProfile);

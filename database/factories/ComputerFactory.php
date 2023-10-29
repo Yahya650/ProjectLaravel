@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Nette\Utils\Random;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Computer>
@@ -39,6 +40,7 @@ class ComputerFactory extends Factory
             'originComputer' => fake()->country(),
             'priceComputer' => fake()->numberBetween(199, 3999),
             'imageComputer' => Arr::random($pathImages),
+            'desc' => Random::generate(100, 'a-zA-Z '),
             'user_id' => 3,
         ];
     }
