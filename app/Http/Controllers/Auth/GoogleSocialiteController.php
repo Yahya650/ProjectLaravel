@@ -39,38 +39,34 @@ class GoogleSocialiteController extends Controller
 
     public function redirect()
     {
-        // dd('sfvgs');
         return Socialite::driver('google')->stateless()->redirect();
     }
 
 
     public function callback()
     {
-        // if (!$request->has('code') || $request->has('denied')) {
-        //     return redirect('/');
-        // }
-        // try {
-        $NewUser = Socialite::driver('google')->stateless()->user();
-        $userFinder = User::where('email', $NewUser->getEmail())->first();
-        // dd($userFinder);
-        if ($userFinder) {
-            Auth::login($userFinder);
-            return redirect()->route('user.profile');
-        } else {
-            $user = new User();
-            $user->name = $NewUser->name;
-            $user->email = strtolower($NewUser->email);
-            $user->social_id = $NewUser->id;
-            $user->password = Hash::make(Random::generate());
-            $user->profileImg = $this->downloadImageFromURL($NewUser->avatar);
-            $user->social_type = "Google";
-            $user->email_verified_at = now();
-            
-            $user->save();
-            Auth::login($user);
-            return redirect()->route('user.profile');
+        try {
+            $NewUser = Socialite::driver('google')->stateless()->user();
+            $userFinder = User::where('email', $NewUser->getEmail())->first();
+            if ($userFinder) {
+                Auth::login($userFinder);
+                return redirect()->route('user.profile');
+            } else {
+                $user = new User();
+                $user->name = $NewUser->name;
+                $user->email = strtolower($NewUser->email);
+                $user->social_id = $NewUser->id;
+                $user->password = Hash::make(Random::generate());
+                $user->profileImg = $this->downloadImageFromURL($NewUser->avatar);
+                $user->social_type = "Google";
+                $user->email_verified_at = now();
+
+                $user->save();
+                Auth::login($user);
+                return redirect()->route('user.profile');
+            }
+        } catch (\Throwable $th) {
+            return redirect('/')->with('messageErr', $th->getMessage());
         }
     }
-
-    
 }

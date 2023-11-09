@@ -25,12 +25,45 @@
     {{-- <link rel="stylesheet" href="{{ url('/css&js/bootstrap.min.css') }}"> --}}
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="{{ url('/css&js/jquery-3.6.4.min.js') }}"></script>
     @yield('style')
     <style>
+        .colored-toast.swal2-icon-success {
+            background-color: #a5dc86 !important;
+        }
+
+        .colored-toast.swal2-icon-error {
+            background-color: #f27474 !important;
+        }
+
+        .colored-toast.swal2-icon-warning {
+            background-color: #f8bb86 !important;
+        }
+
+        .colored-toast.swal2-icon-info {
+            background-color: #3fc3ee !important;
+        }
+
+        .colored-toast.swal2-icon-question {
+            background-color: #87adbd !important;
+        }
+
+        .colored-toast .swal2-title {
+            color: white;
+        }
+
+        .colored-toast .swal2-close {
+            color: white;
+        }
+
+        .colored-toast .swal2-html-container {
+            color: white;
+        }
+
         .contentAjax {
             text-align: center;
         }
@@ -224,18 +257,42 @@
 
     @include('layouts._header')
 
+    @if (session('messageErr'))
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "{{ session('messageErr') }}",
+                footer: '<strong>Try again, If not working try in other time<strong>'
+            });
+        </script>
+    @endif
 
 
     <section class="container">
         <div class="contentAjax">
             @if (session('success'))
                 <div class="m-2">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                    <script>
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-right',
+                            iconColor: 'white',
+                            customClass: {
+                                popup: 'colored-toast',
+                            },
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                        })
+                        Toast.fire({
+                            icon: 'success',
+                            title: "{{ session('success') }}",
+                        })
+                    </script>
                 </div>
             @endif
+
 
             @if (session('resent'))
                 <div class="alert alert-success" role="alert">

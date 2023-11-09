@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
 @extends('layouts.app')
 @section('title', 'computers')
 @section('bg_color','white')
@@ -26,7 +29,7 @@
                                 {{ $item->user->name }}
                             </figcaption>
                         </figure>
-                        <a href="{{ route('computers.show', $item->id*789456654987) }}" class="m-1 btn btn-success">Regarder</a>
+                        <a href="{{ route('computers.show',  Str::studly(base64_encode($Computer->id)) }}" class="m-1 btn btn-success">Regarder</a>
                         @auth
                             @if (Auth::id() == $item['user_id'])
                                 <a href="{{ route('computers.edit', $item->id*789456654987) }}" class="m-1 btn btn-primary">Modify</a>

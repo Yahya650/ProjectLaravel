@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Computer;
+
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+use App\Http\Requests\ValidateFormUpdateComputer;
 
 class ComputresController extends Controller
 {
@@ -45,7 +51,7 @@ class ComputresController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $image = $request->file('image-Compt')->store('ComputersImages', 'public');
 
         $computer = new Computer();
@@ -69,15 +75,13 @@ class ComputresController extends Controller
      */
     public function show($id)
     {
-
-        if (Computer::find($id / 789456654987) && is_integer($id / 789456654987)) {
-            $computer = Computer::find($id / 789456654987);
+        if ($computer = Computer::find(base64_decode($id))) {
+            return view('computers.show', [
+                'computer' => $computer
+            ]);
         } else {
             return redirect()->route('404', 'error');
         }
-        return view('computers.show', [
-            'computer' => $computer
-        ]);
     }
 
     /**
@@ -108,7 +112,7 @@ class ComputresController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(ValidateFormUpdateComputer $request, $id)
     {
         if (Computer::find($id / 789456654987) && is_integer($id / 789456654987)) {
             $computer = Computer::find($id / 789456654987);
@@ -116,12 +120,6 @@ class ComputresController extends Controller
         } else {
             return redirect()->route('404', 'error');
         }
-        $request->validate([
-            "Name-Compt"   => ['required', 'Min:2', 'Max:50'],
-            "Origin-Compt" => 'required',
-            "Price-Compt"  => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
-            "image-Compt"  => ['image', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:10000'],
-        ]);
         try {
             $computer->desc = $request->desc;
         } catch (\Throwable $th) {
@@ -172,6 +170,4 @@ class ComputresController extends Controller
         })->get();
         return Response::json($computersSearch);
     }
-    
-    
 }

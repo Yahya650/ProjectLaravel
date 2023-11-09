@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
 @extends('layouts.app')
 @section('title', $user->name)
 @section('bg_color',
@@ -205,7 +208,7 @@
                                                         <td>
 
                                                             {{-- btn Show --}}
-                                                            <a href="{{ route('computers.show', $computer->id * 789456654987) }}"
+                                                            <a href="{{ route('computers.show', Str::studly(base64_encode($computer->id))) }}"
                                                                 id="show" class="m-1 btn btn-success"><i
                                                                     class="fa-regular fa-eye"></i>
                                                             </a>
@@ -218,9 +221,7 @@
                                                                 <i class="bi bi-pencil"></i>
                                                             </button>
                                                             <script>
-                                                                
                                                                 $('#modalEditComputer{{ $loop->iteration }}').click(function() {
-                                                                    // document.getElementById('loadingCircl').classList.remove('d-none')
                                                                     $('#loadingCircll').removeClass('d-none')
                                                                     $('#feditPc').hide()
                                                                     $.ajax({
@@ -251,9 +252,7 @@
                                                                     });
                                                                 });
                                                             </script>
-
-
-
+                                                            
                                                             {{-- Delete btn --}}
                                                             <button type="button" class="btn btn-danger"
                                                                 data-bs-toggle="modal"

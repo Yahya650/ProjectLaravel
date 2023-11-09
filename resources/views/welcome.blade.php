@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
 @extends('layouts.app')
 @section('title',"welcome")
 @section('content')
@@ -23,7 +26,7 @@
                                 Last Update <cite title="Source Title">{{$item['updated_at']}}</cite> created by {{$item->user->name}}
                             </figcaption>
                         </figure>
-                        <a href="{{route('computers.show',$item->id)}}" id="show" class="m-1 btn btn-success">Regarder</a>
+                        <a href="{{route('computers.show', Str::studly(base64_encode($Computer->id)))}}" id="show" class="m-1 btn btn-success">Regarder</a>
                         @auth
                             @if (Auth::id() == $item['user_id'])
                                 <a href="{{route('computers.edit',$item->id)}}" class="m-1 btn btn-primary">Modify</a>

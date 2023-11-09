@@ -3,8 +3,9 @@
 @section('script')
     <script src="https://kit.fontawesome.com/419916fcd2.js" crossorigin="anonymous"></script>
 @endsection
-@section('bg_color','background: rgb(238,174,202);
-background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);')
+@section('bg_color',
+    'background: rgb(238,174,202);
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);')
 @section('content')
     <style>
         * {
@@ -16,7 +17,7 @@ background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 
 
 
         #body {
-            
+
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
             gap: 0rem;
@@ -90,7 +91,7 @@ background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 
                         </figure>
                     </div>
                     <div class="btns d-flex">
-                        <a href="{{ route('computers.show', $item->id * 789456654987) }}" id="show"
+                        <a href="{{ route('computers.show', Str::studly(base64_encode($item->id))) }}" id="show"
                             class="mx-1 btn btn-success"><i class="fa-regular fa-eye" style="color: #fafafa;"></i></a>
                         @auth
                             @if (Auth::id() == $item['user_id'])
@@ -123,7 +124,8 @@ background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                <form action="{{ route('user.computers.destroy', $item->id * 789456654987) }}" method="post">
+                                <form action="{{ route('user.computers.destroy', $item->id * 789456654987) }}"
+                                    method="post">
                                     @csrf
                                     @method('DELETE')
                                     <input type="submit" class="m-1 btn btn-danger" value="Yes">

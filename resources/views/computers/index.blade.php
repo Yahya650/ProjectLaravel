@@ -1,10 +1,15 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
+
 @extends('layouts.app')
 @section('title', 'computers')
-@section('bg_color','background: rgb(238,174,202);
-background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);')
+@section('bg_color',
+    'background: rgb(238,174,202);
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);')
 @section('content')
     <h1 class="mb-5">My computers</h1>
-    
+
     @if ($computers->count() > 0)
         <div class="d-flex gap-2 justify-content-center flex-wrap">
             @foreach ($computers as $Computer)
@@ -22,7 +27,7 @@ background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 
                                 {{ $Computer->user->name }}
                             </figcaption>
                         </figure>
-                        <a href="{{ route('computers.show', $Computer->id * 789456654987) }}"
+                        <a href="{{ route('computers.show', Str::studly(base64_encode($Computer->id))) }}"
                             class="m-1 btn btn-success">Regarder</a>
                         <a href="{{ route('user.computers.edit', $Computer->id * 789456654987) }}"
                             class="m-1 btn btn-primary">Modify</a>

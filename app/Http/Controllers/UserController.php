@@ -97,7 +97,7 @@ class UserController extends Controller
         foreach ($computers as $computer) {
             Storage::delete('public/' . $computer->imageComputer);
         }
-        Computer::where('user_id', $id)->delete();
+        // Computer::where('user_id', $id)->delete();
         User::find($id)->delete();
         return redirect()->back()->with('success', 'Suprimére a été success');
     }
