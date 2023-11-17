@@ -88,7 +88,8 @@
 
 
         </div>
-        <form class="d-flex" role="search" method="get" action="{{ url('computers/search') }}" id="formSearch">
+        <form class="d-flex" role="search" method="post" action="{{ route('computers.search') }}" id="formSearch">
+            @csrf
             <input autocomplete="off" name="q" id="s" value="{{ isset($search) ? $search : null }}"
                 class="form-control me-2" type="search" placeholder="Search by Title" aria-label="Search">
             <div id="suggestions" class="d-none">

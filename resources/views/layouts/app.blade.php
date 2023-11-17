@@ -292,6 +292,17 @@
                     </script>
                 </div>
             @endif
+            @if (Auth::check() && Auth::user()->email_verified_at === null)
+                <div class="m-2">
+                    <script>
+                        Swal.fire({
+                            title: "Verify Your Email",
+                            text: "Please Verify Your Email if you want try all features",
+                            icon: "warning"
+                        });
+                    </script>
+                </div>
+            @endif
 
 
             @if (session('resent'))
@@ -345,11 +356,12 @@
                             }
                             data.forEach(element => {
                                 $('#suggestions ul').append(
-                                    `<li> <a href="/computers/${element . id * 789456654987}"> ${element.nameComputer} </a> </li>`
+                                    `<a href="/computers/${btoa(element.id)}"><li>${element.nameComputer}</li></a>`
                                 );
                             });
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
+
                             alert(errorThrown)
                         }
                     });

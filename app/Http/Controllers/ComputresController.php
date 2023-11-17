@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\ValidateFormUpdateComputer;
+use SebastianBergmann\Type\NullType;
+
+use function PHPSTORM_META\type;
 
 class ComputresController extends Controller
 {
@@ -75,6 +78,7 @@ class ComputresController extends Controller
      */
     public function show($id)
     {
+        
         if ($computer = Computer::find(base64_decode($id))) {
             return view('computers.show', [
                 'computer' => $computer
@@ -156,11 +160,18 @@ class ComputresController extends Controller
     public function search(Request $request)
     {
         $search = $request->q;
-        $computersSearch = Computer::where(function ($query) use ($search) {
-            $query->where('nameComputer', 'like', "%" . $search . "%")
-                ->paginate(10);
-        })->get();
-        return view('computers.search', compact('computersSearch', 'search'));
+        if ($search !== null) {
+            $computersSearch = Computer::where(function ($query) use ($search) {
+                $query->where('nameComputer', 'like', "%" . $search . "%")
+                    ->paginate(10);
+            })->get();
+            // dd($computersSearch);
+            return view('computers.search', compact('computersSearch', 'search'));
+        }else {
+            $computersSearch = [];
+            return view('computers.search', compact('computersSearch', 'search'));
+        }; 
+        
     }
     public function searchajax(Request $request)
     {

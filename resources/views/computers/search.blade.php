@@ -7,7 +7,7 @@
 
 @section('content')
 
-    @if ($computersSearch->count() > 0)
+    @if (count($computersSearch) > 0)
         <div class="d-flex gap-2 justify-content-center flex-wrap">
             @foreach ($computersSearch as $item)
                 <div class="card mb-1" style="width: 18rem;">
@@ -29,10 +29,10 @@
                                 {{ $item->user->name }}
                             </figcaption>
                         </figure>
-                        <a href="{{ route('computers.show',  Str::studly(base64_encode($Computer->id)) }}" class="m-1 btn btn-success">Regarder</a>
+                        <a href="{{ route('computers.show',  Str::studly(base64_encode($item->id))) }}" class="m-1 btn btn-success">Regarder</a>
                         @auth
                             @if (Auth::id() == $item['user_id'])
-                                <a href="{{ route('computers.edit', $item->id*789456654987) }}" class="m-1 btn btn-primary">Modify</a>
+                                <a href="{{ route('user.computers.edit', $item->id*789456654987) }}" class="m-1 btn btn-primary">Modify</a>
                                 <!-- Button trigger modal -->
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#exampleModal{{ $loop->iteration }}">
@@ -57,7 +57,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">No</button>
-                                        <form action="{{ route('computers.destroy', $item->id*789456654987) }}" method="post">
+                                        <form action="{{ route('user.computers.destroy', $item->id*789456654987) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <input type="submit" class="m-1 btn btn-danger" value="Yes">

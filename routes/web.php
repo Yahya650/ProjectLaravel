@@ -56,7 +56,7 @@ Route::middleware(['guest'])->group(function () {
 
 Route::prefix('computers')->name('computers.')->group(function () {
     Route::get('', [navigation::class, 'index'])->name('index');
-    Route::get('/search', [ComputresController::class, 'search'])->name('search');
+    Route::post('/search', [ComputresController::class, 'search'])->name('search');
     Route::get('/searchajax', [ComputresController::class, 'searchajax'])->name('searchajax');
     Route::get('/{computer}', [ComputresController::class, 'show'])->name('show');
 });

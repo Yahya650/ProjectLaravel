@@ -98,7 +98,7 @@ class UserController extends Controller
             Storage::delete('public/' . $computer->imageComputer);
         }
         // Computer::where('user_id', $id)->delete();
-        User::find($id)->delete();
+        User::find($id)->delete("user_id", $id);
         return redirect()->back()->with('success', 'Suprimére a été success');
     }
 
